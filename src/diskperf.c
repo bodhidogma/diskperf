@@ -2,7 +2,7 @@
  *   @File      diskperf.c
  * Author:      Paul McAvoy <paulmcav@queda.net>
  * 
- * $Id: diskperf.c,v 1.2 2003-12-18 23:56:02 paulmcav Exp $
+ * $Id: diskperf.c,v 1.3 2003-12-19 01:48:54 paulmcav Exp $
 */
 
 #include <sys/types.h>
@@ -239,30 +239,36 @@ dp_do_exec( GtkWidget *win )
 			/* initial write test */
 			case 0:
 				ret = pdp_write_file( path1, count[ mode ], s_FileSize );
+				if ( count[ mode ] > 100 ) ret = 1;
 				break;
 
 			/* delete pattern */
 			case 1:
-//				break;
+				ret = pdp_del_pat( path1, count[0], count[ mode ], s_DelPat );
+				if ( count[ mode ] > 100 ) ret = 1;
+				break;
 
 			/* write pattern */
 			case 2:
-//				break;
+				ret = pdp_write_pat( path1, count[ mode ], s_WrtPat );
+				if ( count[ mode ] > 100 ) ret = 1;
+				break;
 
 			/* read pattern */
 			case 3:
-//				break;
+				ret = pdp_read_pat( path1, count[0], count[ mode ], s_RdPat );
+				if ( count[ mode ] > 100 ) ret = 1;
+				break;
 
 			/* last mode, exit application */
 			default:
-				printf( "here\n" );
 				iRunning = 0;
 				break;
 		}
 		
 		/* increment counter */
-		if ( !ret ) {
-			count[ mode ]++;
+		if ( ret <1 ) {
+			count[ mode ] += -ret;
 		}
 		/* switch to next step */
 		else {
@@ -284,7 +290,7 @@ dp_do_exec( GtkWidget *win )
 		}
 		
 //		if ( !(count % 1) ) {
-			sprintf( path0, "Writing file #%d", count[ mode ] );
+			sprintf( path0, "Work file #%d", count[ mode ] );
 			gtk_statusbar_pop( my_Data.status, (guint)NULL );
 			gtk_statusbar_push( my_Data.status, (guint)NULL, path0 );
 //		}
@@ -338,5 +344,30 @@ pdp_write_file( const char *path, int num, int KBsize )
 	sync();
 
 	close( fd );
-	return 0;
+	return -1;
+}
+
+int
+pdp_del_pat( const char *path, int max, int num, int Step )
+{
+	char name[ MP_SIZE*2 ];
+	
+	sprintf( name, "%s/fill-%05d", path, num );
+	
+	if ( unlink( name ) == -1 )
+		return 1;
+	else
+		return -Step;
+}
+
+int
+pdp_write_pat( const char *path, int num, int KBsize )
+{
+	return 1;
+}
+
+int
+pdp_read_pat( const char *path, int max, int num, int Step )
+{
+	return 1;
 }
