@@ -143,3 +143,39 @@ on_rFS2_toggled                        (GtkToggleButton *togglebutton,
 void
 on_rDP1_toggled                        (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
+
+void
+on_eWrPat_changed                      (GtkEditable     *editable,
+                                        gpointer         user_data);
+
+void
+on_eDelPat_changed                     (GtkEditable     *editable,
+                                        gpointer         user_data);
+
+void
+on_rRP1_toggled                        (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);
+
+void
+on_rRP2_toggled                        (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);
+
+void
+on_eRdPat_changed                      (GtkEditable     *editable,
+                                        gpointer         user_data);
+
+void
+on___changed                           (GtkEditable     *editable,
+                                        gpointer         user_data);
+
+void
+on_eFileSize_changed                   (GtkEditable     *editable,
+                                        gpointer         user_data);
+
+void
+on_rRP3_toggled                        (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);
+
+void
+on_rRP4_toggled                        (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);

@@ -375,17 +375,17 @@ Free: ## KB</property>
 
 		  <child>
 		    <widget class="GtkEntry" id="eWrPat">
-		      <property name="width_request">40</property>
 		      <property name="visible">True</property>
 		      <property name="sensitive">False</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">True</property>
-		      <property name="max_length">2</property>
+		      <property name="max_length">6</property>
 		      <property name="text" translatable="yes">64</property>
 		      <property name="has_frame">True</property>
 		      <property name="invisible_char" translatable="yes">*</property>
 		      <property name="activates_default">False</property>
+		      <signal name="changed" handler="on_eWrPat_changed" last_modification_time="Thu, 18 Dec 2003 22:33:17 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -520,17 +520,17 @@ Free: ## KB</property>
 
 		  <child>
 		    <widget class="GtkEntry" id="eDelPat">
-		      <property name="width_request">40</property>
 		      <property name="visible">True</property>
 		      <property name="sensitive">False</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">True</property>
-		      <property name="max_length">1</property>
+		      <property name="max_length">2</property>
 		      <property name="text" translatable="yes">4</property>
 		      <property name="has_frame">True</property>
 		      <property name="invisible_char" translatable="yes">*</property>
 		      <property name="activates_default">False</property>
+		      <signal name="changed" handler="on_eDelPat_changed" last_modification_time="Thu, 18 Dec 2003 22:33:22 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -596,6 +596,7 @@ Free: ## KB</property>
 		      <property name="active">False</property>
 		      <property name="inconsistent">False</property>
 		      <property name="draw_indicator">True</property>
+		      <signal name="toggled" handler="on_rRP1_toggled" last_modification_time="Thu, 18 Dec 2003 22:32:31 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -615,6 +616,7 @@ Free: ## KB</property>
 		      <property name="inconsistent">False</property>
 		      <property name="draw_indicator">True</property>
 		      <property name="group">rRP1</property>
+		      <signal name="toggled" handler="on_rRP2_toggled" last_modification_time="Thu, 18 Dec 2003 22:32:38 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -634,6 +636,7 @@ Free: ## KB</property>
 		      <property name="inconsistent">False</property>
 		      <property name="draw_indicator">True</property>
 		      <property name="group">rRP1</property>
+		      <signal name="toggled" handler="on_rRP3_toggled" last_modification_time="Thu, 18 Dec 2003 22:40:38 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -644,16 +647,16 @@ Free: ## KB</property>
 
 		  <child>
 		    <widget class="GtkEntry" id="eRdPat">
-		      <property name="width_request">58</property>
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">True</property>
-		      <property name="max_length">0</property>
+		      <property name="max_length">2</property>
 		      <property name="text" translatable="yes">4</property>
 		      <property name="has_frame">True</property>
 		      <property name="invisible_char" translatable="yes">*</property>
 		      <property name="activates_default">False</property>
+		      <signal name="changed" handler="on_eRdPat_changed" last_modification_time="Thu, 18 Dec 2003 22:33:29 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -674,6 +677,7 @@ Free: ## KB</property>
 		      <property name="inconsistent">False</property>
 		      <property name="draw_indicator">True</property>
 		      <property name="group">rRP1</property>
+		      <signal name="toggled" handler="on_rRP4_toggled" last_modification_time="Thu, 18 Dec 2003 22:40:31 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -716,8 +720,6 @@ Free: ## KB</property>
 	  <child>
 	    <widget class="GtkFrame" id="frFileSize">
 	      <property name="border_width">1</property>
-	      <property name="width_request">103</property>
-	      <property name="height_request">104</property>
 	      <property name="visible">True</property>
 	      <property name="label_xalign">0</property>
 	      <property name="label_yalign">0.5</property>
@@ -789,18 +791,18 @@ Free: ## KB</property>
 		  </child>
 
 		  <child>
-		    <widget class="GtkEntry" id=" ">
-		      <property name="width_request">58</property>
+		    <widget class="GtkEntry" id="eFileSize">
 		      <property name="visible">True</property>
 		      <property name="sensitive">False</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">True</property>
-		      <property name="max_length">0</property>
+		      <property name="max_length">6</property>
 		      <property name="text" translatable="yes">64</property>
 		      <property name="has_frame">True</property>
 		      <property name="invisible_char" translatable="yes">*</property>
 		      <property name="activates_default">False</property>
+		      <signal name="changed" handler="on_eFileSize_changed" last_modification_time="Thu, 18 Dec 2003 22:37:52 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -921,7 +923,6 @@ Free: ## KB</property>
 
 	  <child>
 	    <widget class="GtkStatusbar" id="stBar">
-	      <property name="height_request">20</property>
 	      <property name="visible">True</property>
 	      <property name="has_resize_grip">True</property>
 	    </widget>

@@ -2,7 +2,7 @@
  *   @File      diskperf.c
  * Author:      Paul McAvoy <paulmcav@queda.net>
  * 
- * $Id: diskperf.c,v 1.1 2003-12-16 21:14:11 paulmcav Exp $
+ * $Id: diskperf.c,v 1.2 2003-12-18 23:56:02 paulmcav Exp $
 */
 
 #include <sys/types.h>
@@ -27,10 +27,10 @@ char mount_point[ MP_SIZE ];
 int  iRunning = 0;
 
 /* need to make sure these line up with the GUI options */
-int  s_FileSize = 1;
-int  s_DelPat   = 1;
-int  s_WrtPat   = 1;
-int  s_RdSize   = 1;
+int  s_FileSize = 16;
+int  s_DelPat   = 2;
+int  s_WrtPat   = 16;
+int  s_RdPat    = 2;
 
 // ------------------------------------------------------------------
 
@@ -40,6 +40,10 @@ typedef struct {
 	GtkLabel       *lblWrite;
 	GtkLabel       *lblWrPat;
 	GtkLabel       *lblRdPat;
+
+	char  testPath[ MP_SIZE ];
+	int   testCount;
+
 } app_info;
 
 app_info my_Data;
@@ -158,6 +162,35 @@ dp_get_filesyssize( GtkLabel *m, char *dev )
 	return dfree;
 }
 
+/* initial file write */
+int
+pdp_test1( void )
+{
+	return 0;
+}
+
+/* delete step */
+int
+pdp_test2( void )
+{
+	return 0;
+}
+
+/* write pattern */
+int
+pdp_test3( void )
+{
+	return 0;
+}
+
+/* read pattern */
+int
+pdp_test4( void )
+{
+	return 0;
+}
+
+/* entry point to start testing */
 int
 dp_do_exec( GtkWidget *win )
 {
@@ -166,37 +199,25 @@ dp_do_exec( GtkWidget *win )
 
 	int   x;
 	float f_diskfree; 
-	long  count;
+	long  count[4] = { 0 };
 	int   mode;
+	int   ret;
+	int   KBsize;
 	char  path0[ MP_SIZE ];
 	char  path1[ MP_SIZE ];
 	char  *ptr;
 	float rate;
 	float maxrate;
-	int   KBsize;
 
 	time_t t_start, t_end, t_diff;
+	
+//	printf( "fs: %d, dp: %d, wp: %d, rp: %d\n", s_FileSize, s_DelPat, s_WrtPat, s_RdPat );
 	
 	/* get status bar */
 	gtk_statusbar_push( my_Data.status, (guint)NULL, "Working..." );
 	
 	/* get info label */
 	l_info = (GtkLabel*)lookup_widget (GTK_WIDGET (win), "lblSize");
-	
-	/* determine write file size */
-	if ( s_FileSize == 3 ) {
-		w = (GtkWidget*)lookup_widget (GTK_WIDGET (win), "eFilSize");
-		ptr = (char*)gtk_entry_get_text( (GtkEntry*)w );
-
-		if (ptr) {
-			KBsize = atoi( ptr );
-		}
-		else {
-			KBsize = 32;
-		}
-	}
-	else 
-		KBsize = s_FileSize * 16;
 	
 	/* find correct path and make our test dir */
 	strcpy( path0, mount_point );
@@ -206,26 +227,51 @@ dp_do_exec( GtkWidget *win )
 	mkdir( path1, 0777L );
 
 //	printf( "path1: %s\n", path1 );
-//	printf( "fs: %d, dp: %d, wp: %d\n", KBsize, s_DelPat, s_WrtPat );
 	
 	t_start = time(NULL);
-	count = 0;
 	mode  = 0;
 	rate  = 0;
 	maxrate = -1;
 	while ( iRunning ) {
-		/* write file to mount point w/ count# */
-		if ( !pdp_write_file( path1, count, KBsize ) ) {
-			count++;
-		}
-		else {
-			/* disk full? Some error, lets stop */
-			iRunning = 0;
+
+		switch (mode)
+		{
+			/* initial write test */
+			case 0:
+				ret = pdp_write_file( path1, count[ mode ], s_FileSize );
+				break;
+
+			/* delete pattern */
+			case 1:
+//				break;
+
+			/* write pattern */
+			case 2:
+//				break;
+
+			/* read pattern */
+			case 3:
+//				break;
+
+			/* last mode, exit application */
+			default:
+				printf( "here\n" );
+				iRunning = 0;
+				break;
 		}
 		
+		/* increment counter */
+		if ( !ret ) {
+			count[ mode ]++;
+		}
+		/* switch to next step */
+		else {
+			mode ++;
+		}
+
 		t_end = time(NULL);
 		if ( t_end != t_start ) {
-			rate = count * KBsize / (1.0 * t_end-t_start);
+			rate = count[ mode ] * s_FileSize / (1.0 * t_end-t_start);
 
 			sprintf( path0, "%10.1f KB/s", rate );
 			gtk_label_set_label( my_Data.lblWrPat, path0 );
@@ -238,7 +284,7 @@ dp_do_exec( GtkWidget *win )
 		}
 		
 //		if ( !(count % 1) ) {
-			sprintf( path0, "Writing file #%d", count );
+			sprintf( path0, "Writing file #%d", count[ mode ] );
 			gtk_statusbar_pop( my_Data.status, (guint)NULL );
 			gtk_statusbar_push( my_Data.status, (guint)NULL, path0 );
 //		}
@@ -246,11 +292,15 @@ dp_do_exec( GtkWidget *win )
 		/* update display with pertinent info.. */
 		f_diskfree = dp_get_filesyssize( l_info, mount_point );
 		
+		/* process GTK stuff */
+		/* NOTE: possible change in status of iRunning here */
+
 		while(gtk_events_pending()) { gtk_main_iteration(); }
+		
 	}
 	
 	t_end = time(NULL);
-	sprintf( path0, "Wrote files: %d in %ds.", count, (t_end-t_start) );
+	sprintf( path0, "Wrote files: %d in %ds.", count[mode], (t_end-t_start) );
 	gtk_statusbar_push( my_Data.status, (guint)NULL, path0 );
 	
 	return 0;

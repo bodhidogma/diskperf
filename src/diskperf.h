@@ -2,7 +2,7 @@
  *   @File      diskperf.h
  * Author:      Paul McAvoy <paulmcav@queda.net>
  *              
- * $Id: diskperf.h,v 1.1 2003-12-16 21:14:11 paulmcav Exp $
+ * $Id: diskperf.h,v 1.2 2003-12-18 23:56:02 paulmcav Exp $
 */
 
 #ifndef _DISKPERF_H_
@@ -23,6 +23,7 @@ extern int  iRunning;
 extern int  s_FileSize;
 extern int  s_DelPat;
 extern int  s_WrtPat;
+extern int  s_RdPat;
 
 #endif
 

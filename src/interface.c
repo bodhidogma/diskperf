@@ -80,7 +80,7 @@ create_wDiskPerf (void)
   GSList *rFS1_group = NULL;
   GtkWidget *rFS2;
   GtkWidget *rFS3;
-  GtkWidget *_;
+  GtkWidget *eFileSize;
   GtkWidget *label5;
   GtkWidget *hbuttonbox1;
   GtkWidget *bCancel;
@@ -219,9 +219,8 @@ create_wDiskPerf (void)
   eWrPat = gtk_entry_new ();
   gtk_widget_show (eWrPat);
   gtk_box_pack_end (GTK_BOX (vbxWrite), eWrPat, FALSE, FALSE, 0);
-  gtk_widget_set_size_request (eWrPat, 40, -2);
   gtk_widget_set_sensitive (eWrPat, FALSE);
-  gtk_entry_set_max_length (GTK_ENTRY (eWrPat), 2);
+  gtk_entry_set_max_length (GTK_ENTRY (eWrPat), 6);
   gtk_entry_set_text (GTK_ENTRY (eWrPat), _("64"));
 
   label7 = gtk_label_new (_("Write Pattern"));
@@ -266,9 +265,8 @@ create_wDiskPerf (void)
   eDelPat = gtk_entry_new ();
   gtk_widget_show (eDelPat);
   gtk_box_pack_end (GTK_BOX (vbxDelete), eDelPat, FALSE, FALSE, 0);
-  gtk_widget_set_size_request (eDelPat, 40, -2);
   gtk_widget_set_sensitive (eDelPat, FALSE);
-  gtk_entry_set_max_length (GTK_ENTRY (eDelPat), 1);
+  gtk_entry_set_max_length (GTK_ENTRY (eDelPat), 2);
   gtk_entry_set_text (GTK_ENTRY (eDelPat), _("4"));
 
   label6 = gtk_label_new (_("Delete Pattern"));
@@ -307,7 +305,7 @@ create_wDiskPerf (void)
   eRdPat = gtk_entry_new ();
   gtk_widget_show (eRdPat);
   gtk_box_pack_end (GTK_BOX (vbxRead), eRdPat, FALSE, FALSE, 0);
-  gtk_widget_set_size_request (eRdPat, 58, -2);
+  gtk_entry_set_max_length (GTK_ENTRY (eRdPat), 2);
   gtk_entry_set_text (GTK_ENTRY (eRdPat), _("4"));
 
   rRP4 = gtk_radio_button_new_with_mnemonic (NULL, _("Custom (Evry N)"));
@@ -326,7 +324,6 @@ create_wDiskPerf (void)
   gtk_table_attach (GTK_TABLE (table1), frFileSize, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_SHRINK | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_SHRINK | GTK_FILL), 0, 0);
-  gtk_widget_set_size_request (frFileSize, 103, 104);
   gtk_container_set_border_width (GTK_CONTAINER (frFileSize), 1);
 
   vbxFileSize = gtk_vbox_new (FALSE, 0);
@@ -351,12 +348,12 @@ create_wDiskPerf (void)
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (rFS3), rFS1_group);
   rFS1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (rFS3));
 
-  _ = gtk_entry_new ();
-  gtk_widget_show (_);
-  gtk_box_pack_end (GTK_BOX (vbxFileSize), _, FALSE, FALSE, 0);
-  gtk_widget_set_size_request (_, 58, -2);
-  gtk_widget_set_sensitive (_, FALSE);
-  gtk_entry_set_text (GTK_ENTRY (_), _("64"));
+  eFileSize = gtk_entry_new ();
+  gtk_widget_show (eFileSize);
+  gtk_box_pack_end (GTK_BOX (vbxFileSize), eFileSize, FALSE, FALSE, 0);
+  gtk_widget_set_sensitive (eFileSize, FALSE);
+  gtk_entry_set_max_length (GTK_ENTRY (eFileSize), 6);
+  gtk_entry_set_text (GTK_ENTRY (eFileSize), _("64"));
 
   label5 = gtk_label_new (_("File Size"));
   gtk_widget_show (label5);
@@ -397,7 +394,6 @@ create_wDiskPerf (void)
   stBar = gtk_statusbar_new ();
   gtk_widget_show (stBar);
   gtk_box_pack_start (GTK_BOX (hbox1), stBar, FALSE, TRUE, 0);
-  gtk_widget_set_size_request (stBar, -2, 20);
 
   g_signal_connect ((gpointer) wDiskPerf, "delete_event",
                     G_CALLBACK (on_quit),
@@ -414,6 +410,9 @@ create_wDiskPerf (void)
   g_signal_connect ((gpointer) rWP3, "toggled",
                     G_CALLBACK (on_rWP3_toggled),
                     NULL);
+  g_signal_connect ((gpointer) eWrPat, "changed",
+                    G_CALLBACK (on_eWrPat_changed),
+                    NULL);
   g_signal_connect ((gpointer) rDP1, "toggled",
                     G_CALLBACK (on_rDP1_toggled),
                     NULL);
@@ -426,6 +425,24 @@ create_wDiskPerf (void)
   g_signal_connect ((gpointer) rDP4, "toggled",
                     G_CALLBACK (on_rDP4_toggled),
                     NULL);
+  g_signal_connect ((gpointer) eDelPat, "changed",
+                    G_CALLBACK (on_eDelPat_changed),
+                    NULL);
+  g_signal_connect ((gpointer) rRP1, "toggled",
+                    G_CALLBACK (on_rRP1_toggled),
+                    NULL);
+  g_signal_connect ((gpointer) rRP2, "toggled",
+                    G_CALLBACK (on_rRP2_toggled),
+                    NULL);
+  g_signal_connect ((gpointer) rRP3, "toggled",
+                    G_CALLBACK (on_rRP3_toggled),
+                    NULL);
+  g_signal_connect ((gpointer) eRdPat, "changed",
+                    G_CALLBACK (on_eRdPat_changed),
+                    NULL);
+  g_signal_connect ((gpointer) rRP4, "toggled",
+                    G_CALLBACK (on_rRP4_toggled),
+                    NULL);
   g_signal_connect ((gpointer) rFS1, "toggled",
                     G_CALLBACK (on_rFS1_toggled),
                     NULL);
@@ -434,6 +451,9 @@ create_wDiskPerf (void)
                     NULL);
   g_signal_connect ((gpointer) rFS3, "toggled",
                     G_CALLBACK (on_rFS3_toggled),
+                    NULL);
+  g_signal_connect ((gpointer) eFileSize, "changed",
+                    G_CALLBACK (on_eFileSize_changed),
                     NULL);
   g_signal_connect ((gpointer) bCancel, "clicked",
                     G_CALLBACK (on_bCancel_clicked),
@@ -493,7 +513,7 @@ create_wDiskPerf (void)
   GLADE_HOOKUP_OBJECT (wDiskPerf, rFS1, "rFS1");
   GLADE_HOOKUP_OBJECT (wDiskPerf, rFS2, "rFS2");
   GLADE_HOOKUP_OBJECT (wDiskPerf, rFS3, "rFS3");
-  GLADE_HOOKUP_OBJECT (wDiskPerf, _, "_");
+  GLADE_HOOKUP_OBJECT (wDiskPerf, eFileSize, "eFileSize");
   GLADE_HOOKUP_OBJECT (wDiskPerf, label5, "label5");
   GLADE_HOOKUP_OBJECT (wDiskPerf, hbuttonbox1, "hbuttonbox1");
   GLADE_HOOKUP_OBJECT (wDiskPerf, bCancel, "bCancel");
