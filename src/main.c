@@ -7,26 +7,29 @@
 #  include <config.h>
 #endif
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "interface.h"
 #include "support.h"
+
+#include "diskperf.h"
 
 int
 main (int argc, char *argv[])
 {
   GtkWidget *wDiskPerf;
-
+  GtkWidget *p;
+  
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 #endif
 
-  gnome_program_init (PACKAGE, VERSION, LIBGNOMEUI_MODULE,
-                      argc, argv,
-                      GNOME_PARAM_APP_DATADIR, PACKAGE_DATA_DIR,
-                      NULL);
+  gtk_set_locale ();
+  gtk_init (&argc, &argv);
+
+  add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 
   /*
    * The following code was added by Glade to create one of each component
@@ -36,6 +39,9 @@ main (int argc, char *argv[])
   wDiskPerf = create_wDiskPerf ();
   gtk_widget_show (wDiskPerf);
 
+  /* call our disk perf startup stuff */
+  dp_main( wDiskPerf );
+  
   gtk_main ();
   return 0;
 }

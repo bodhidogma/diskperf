@@ -12,8 +12,8 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <bonobo.h>
-#include <gnome.h>
+#include <gdk/gdkkeysyms.h>
+#include <gtk/gtk.h>
 
 #include "callbacks.h"
 #include "interface.h"

@@ -11,7 +11,8 @@ diskperf_SOURCES = \
 	main.c \
 	support.c support.h \
 	interface.c interface.h \
-	callbacks.c callbacks.h
+	callbacks.c callbacks.h \
+	diskperf.c diskperf.h
 
 diskperf_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
